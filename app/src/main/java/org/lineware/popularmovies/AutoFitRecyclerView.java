@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
 /**
+ * Source Location: https://github.com/chiuki/android-recyclerview/blob/master/app/src/main/java/com/sqisland/android/recyclerview/AutofitRecyclerView.java
+ *
  * Created by jmsykes15 on 3/25/16.
  */
 public class AutoFitRecyclerView extends RecyclerView {

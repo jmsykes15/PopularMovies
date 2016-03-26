@@ -8,10 +8,12 @@
     tools:context=".fragments.MovieGridFragment"
     tools:showIn="@layout/activity_main">
 
-    <android.support.v7.widget.RecyclerView
+    <org.lineware.popularmovies.AutoFitRecyclerView
         android:id="@+id/rec_movie_grid"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:columnWidth="154dp"
+        android:clipToPadding="false"
         android:scrollbars="vertical"/>
 
 </LinearLayout>

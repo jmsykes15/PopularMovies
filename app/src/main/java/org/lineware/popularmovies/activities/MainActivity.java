@@ -4,13 +4,12 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import org.lineware.popularmovies.AutoFitRecyclerView;
 import org.lineware.popularmovies.R;
 import org.lineware.popularmovies.adapters.MovieDBAdapter;
 import org.lineware.popularmovies.pojos.Movie;
@@ -19,21 +18,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private GridLayoutManager mLayoutManager;
+    private AutoFitRecyclerView mRecyclerView;
+    private AutoFitRecyclerView.Adapter mAdapter;
+//    private GridLayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.rec_movie_grid);
-        mRecyclerView.setHasFixedSize(true);
-
-        mLayoutManager = new GridLayoutManager(this, 2);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
+        mRecyclerView = (AutoFitRecyclerView) findViewById(R.id.rec_movie_grid);
+//        mRecyclerView.setHasFixedSize(true);
+//
+//        mLayoutManager = new GridLayoutManager(this, 2);
+//        mRecyclerView.setLayoutManager(mLayoutManager);
+//
         mAdapter = new MovieDBAdapter(testDataGeneratator());
         mRecyclerView.setAdapter(mAdapter);
 
