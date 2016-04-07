@@ -2,9 +2,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/padding"
+    android:orientation="vertical"
     tools:context=".fragments.DetailsActivityFragment"
     tools:showIn="@layout/activity_details">
 
+    <TextView
+        android:id="@+id/details_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Title"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:textSize="32sp"
+        android:padding="@dimen/padding"/>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin">
+        <ImageView
+            android:id="@+id/details_movie_poster"
+            android:layout_width="156dp"
+            android:layout_height="156dp"
+            android:src="@android:drawable/sym_def_app_icon"/>
+        <LinearLayout
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/details_releasedate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date"/>
+            <TextView
+                android:id="@+id/details_duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Duration" />
+            <RatingBar
+                android:id="@+id/details_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:rating="4.5"
+                android:numStars="5" />
+            <Button
+                android:id="@+id/details_favorite_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Favorite"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/details_plot"
+        android:layout_margin="@dimen/margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="sadf asdjflkk as;df afs; df asdfjao sdfij fjasjoidfjaosfdj oasijd foasoidj foajsfd oiajsdf oajf sodijfaosidjf a sjdoifajos didfjoa sidjfoai sdjfoiasjdf oiajsdf oaijsd foiasjid foiasijdf "/>
+
+    <ListView
+        android:id="@+id/details_trailers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </ListView>
 </LinearLayout>

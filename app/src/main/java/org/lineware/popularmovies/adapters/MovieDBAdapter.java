@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.lineware.popularmovies.R;
@@ -21,22 +22,15 @@ public class MovieDBAdapter extends RecyclerView.Adapter<MovieDBAdapter.ViewHold
         mDataSet = dataset;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView mTitle;
-//        TextView mPlot;
-//        TextView mRelease;
-//        TextView mRating;
-//        TextView mLength;
+        ImageView mImage;
 
         public ViewHolder(View view) {
             super(view);
             mTitle = (TextView) view.findViewById(R.id.title_view);
-//            mPlot;
-//            mRelease;
-//            mRating;
-//            String mLength;
-
+            mImage = (ImageView) view.findViewById(R.id.grid_movie_poster);
         }
     }
 
@@ -58,6 +52,10 @@ public class MovieDBAdapter extends RecyclerView.Adapter<MovieDBAdapter.ViewHold
     @Override
     public int getItemCount() {
         return mDataSet.size();
+    }
+
+    public Movie getItem(int position){
+        return mDataSet.get(position);
     }
 
     @Override
