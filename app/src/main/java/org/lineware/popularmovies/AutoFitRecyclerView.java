@@ -2,31 +2,33 @@ package org.lineware.popularmovies;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.database.Cursor;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 
 /**
  * Source Location: https://github.com/chiuki/android-recyclerview/blob/master/app/src/main/java/com/sqisland/android/recyclerview/AutofitRecyclerView.java
  *
  * Created by jmsykes15 on 3/25/16.
  */
-public class AutoFitRecyclerView extends RecyclerView {
+public class AutoFitRecyclerView extends CursorRecyclerViewAdapter {
     private GridLayoutManager manager;
     private int columnWidth = -1;
 
-    public AutoFitRecyclerView(Context context) {
-        super(context);
+    public AutoFitRecyclerView(Context context, Cursor cursor) {
+        super(context, cursor);
         init(context, null);
     }
 
-    public AutoFitRecyclerView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public AutoFitRecyclerView(Context context, Cursor cursor, AttributeSet attrs) {
+        super(context, cursor, attrs);
         init(context, attrs);
     }
 
-    public AutoFitRecyclerView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+    public AutoFitRecyclerView(Context context, Cursor cursor, AttributeSet attrs, int defStyle) {
+        super(context, cursor, attrs, defStyle);
         init(context, attrs);
     }
 
@@ -51,5 +53,15 @@ public class AutoFitRecyclerView extends RecyclerView {
             int spanCount = Math.max(1, getMeasuredWidth() / columnWidth);
             manager.setSpanCount(spanCount);
         }
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, Cursor cursor) {
+
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return null;
     }
 }
