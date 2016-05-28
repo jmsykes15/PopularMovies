@@ -20,7 +20,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 
 /**
  * Created by skyfishjy on 10/31/14.
@@ -39,14 +38,6 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
     private DataSetObserver mDataSetObserver;
 
     public CursorRecyclerViewAdapter(Context context, Cursor cursor) {
-
-    }
-
-    public CursorRecyclerViewAdapter(Context context, Cursor cursor, AttributeSet attrs) {
-
-    }
-
-    public CursorRecyclerViewAdapter(Context context, Cursor cursor, AttributeSet attrs, int defStyle) {
         mContext = context;
         mCursor = cursor;
         mDataValid = cursor != null;
