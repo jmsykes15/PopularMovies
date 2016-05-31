@@ -62,6 +62,7 @@ public class MovieGridFragment extends Fragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 Intent intent = new Intent(getContext(), DetailsActivity.class);
+//                intent.putExtra(MOVIE_DATA, )
                 startActivity(intent);
                 return false;
             }
