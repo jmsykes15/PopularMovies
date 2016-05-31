@@ -11,9 +11,9 @@ import org.lineware.popularmovies.R;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DetailsActivityFragment extends Fragment {
+public class DetailsFragment extends Fragment {
 
-    public DetailsActivityFragment() {
+    public DetailsFragment() {
     }
 
     @Override
