@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import org.lineware.popularmovies.R;
+import org.lineware.popularmovies.fragments.DetailsFragment;
+import org.lineware.popularmovies.fragments.MovieGridFragment;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -15,6 +17,20 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        if(savedInstanceState == null){
+            Bundle arguments = new Bundle();
+            arguments.putParcelable(MovieGridFragment.MOVIE_DATA,
+                    getIntent().getParcelableExtra(MovieGridFragment.MOVIE_DATA));
+
+            DetailsFragment fragment = new DetailsFragment();
+            fragment.setArguments(arguments);
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.movie_detail_container, fragment)
+                    .commit();
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

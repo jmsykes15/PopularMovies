@@ -1,4 +1,4 @@
-package org.lineware.popularmovies;
+package org.lineware.popularmovies.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.lineware.popularmovies.pojos.Movie;
+import org.lineware.popularmovies.R;
+import org.lineware.popularmovies.helper.MovieContract;
 
 /**
  * Created by jmsykes15 on 5/27/16.
@@ -22,9 +23,8 @@ public class MoviesCursorAdapter extends CursorRecyclerViewAdapter<MoviesCursorA
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, Cursor cursor) {
-        Movie movie = Movie.fromCursor(cursor);
-        viewHolder.titleView.setText(movie.getmTitle());
-        viewHolder.posterView.setImageURI(Uri.parse(movie.getPosterURI()));
+        viewHolder.titleView.setText(cursor.getString(MovieContract.COLUMN_TITLE));
+        viewHolder.posterView.setImageURI(Uri.parse(String.valueOf(MovieContract.COLUMN_POSTER)));
     }
 
     @Override

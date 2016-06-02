@@ -1,4 +1,4 @@
-package org.lineware.popularmovies;
+package org.lineware.popularmovies.adapters;
 /*
  * Copyright (C) 2014 skyfish.jy@gmail.com
  *
