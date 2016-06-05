@@ -13,6 +13,7 @@ import org.lineware.popularmovies.AutoFitRecyclerView;
 import org.lineware.popularmovies.R;
 import org.lineware.popularmovies.activities.DetailsActivity;
 import org.lineware.popularmovies.adapters.MoviesCursorAdapter;
+import org.lineware.popularmovies.helper.FetchMovieTask;
 
 
 /**
@@ -23,6 +24,14 @@ public class MovieGridFragment extends Fragment {
     public static final String MOVIE_DATA = "movieData";
     private AutoFitRecyclerView mRecyclerView;
     private MoviesCursorAdapter mAdapter;
+
+    /*
+    * TODO: Delete this method
+    * */
+    private void updateMovies(){
+        FetchMovieTask fetchMovieTask = new FetchMovieTask(getActivity());
+        fetchMovieTask.execute();
+    }
 
     public MovieGridFragment() {
     }
