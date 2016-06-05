@@ -29,7 +29,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, Void>{
         final String OWM_RESULT =  "results";
         final String OWM_TITLE = "original_title";
         final String OWM_ID = "id";
-        final String OWM_RELEASE = "release";
+        final String OWM_RELEASE = "release_date";
         final String OWM_POSTER =  "poster_path";
         final String OWM_BACKDROP = "backdrop_path";
         final String OWM_RATING = "vote_average";
@@ -37,19 +37,22 @@ public class FetchMovieTask extends AsyncTask<String, Void, Void>{
 
         try{
             JSONObject movieJson = new JSONObject(movieJsonStr);
-            JSONArray movieResults = new JSONArray(OWM_RESULT);
+            JSONArray movieResults = movieJson.getJSONArray(OWM_RESULT);
+
 
             Vector<ContentValues> cVVector = new Vector<>(movieResults.length());
 
             for(int i = 0; i < movieResults.length(); i++){
 
-                String titleObject = movieJson.getString(OWM_TITLE);
-                int idObject = movieJson.getInt(OWM_ID);
-                String releaseObject = movieJson.getString(OWM_RELEASE);
-                String posterpathObject = movieJson.getString(OWM_POSTER);
-                String backdroppathObject = movieJson.getString(OWM_BACKDROP);
-                double voteaverageObject = movieJson.getDouble(OWM_RATING);
-                String overviewObject = movieJson.getString(OWM_PLOT);
+                JSONObject movieResultsObject = movieResults.getJSONObject(i);
+
+                String titleObject = movieResultsObject.getString(OWM_TITLE);
+                int idObject = movieResultsObject.getInt(OWM_ID);
+                String releaseObject = movieResultsObject.getString(OWM_RELEASE);
+                String posterpathObject = movieResultsObject.getString(OWM_POSTER);
+                String backdroppathObject = movieResultsObject.getString(OWM_BACKDROP);
+                double voteaverageObject = movieResultsObject.getDouble(OWM_RATING);
+                String overviewObject = movieResultsObject.getString(OWM_PLOT);
 
                 ContentValues movieValues = new ContentValues();
 
