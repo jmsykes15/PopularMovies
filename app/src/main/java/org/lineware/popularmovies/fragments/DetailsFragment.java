@@ -27,14 +27,13 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
     private TextView mRelease;
     private RatingBar mRating;
 
+    public static final String DETAIL_URI = "URI";
 
     private static final int DETAIL_LOADER = 0;
     private Uri mUri;
 
 
     public DetailsFragment() {setHasOptionsMenu(false);}
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,7 +42,7 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
         Bundle arguments = getArguments();
 
         if (arguments != null) {
-            mUri = arguments.getParcelable(MovieGridFragment.MOVIE_DATA);
+            mUri = arguments.getParcelable(DETAIL_URI);
         }
 
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
@@ -62,6 +61,19 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
+    }
+
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        public void onItemSelected(Uri dateUri);
     }
 
     @Override
@@ -84,6 +96,8 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if(data != null && data.moveToFirst()){
+
+
 
             getActivity().setTitle(data.getString(MovieContract.COLUMN_TITLE));
             mBanner.setImageURI(Uri.parse(data.getString(MovieContract.COLUMN_BANNER)));

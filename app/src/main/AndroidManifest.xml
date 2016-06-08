@@ -27,6 +27,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
+        <provider
+            android:authorities="org.lineware.popularmovies"
+            android:name=".helper.MovieProvider"
+            android:exported="false"
+            android:syncable="true"/>
     </application>
 
 </manifest>

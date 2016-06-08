@@ -9,7 +9,6 @@ import android.view.View;
 
 import org.lineware.popularmovies.R;
 import org.lineware.popularmovies.fragments.DetailsFragment;
-import org.lineware.popularmovies.fragments.MovieGridFragment;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -20,8 +19,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         if(savedInstanceState == null){
             Bundle arguments = new Bundle();
-            arguments.putParcelable(MovieGridFragment.MOVIE_DATA,
-                    getIntent().getParcelableExtra(MovieGridFragment.MOVIE_DATA));
+            arguments.putParcelable(DetailsFragment.DETAIL_URI, getIntent().getData());
 
             DetailsFragment fragment = new DetailsFragment();
             fragment.setArguments(arguments);

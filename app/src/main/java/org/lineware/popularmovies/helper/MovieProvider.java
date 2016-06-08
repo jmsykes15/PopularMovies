@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
@@ -18,15 +19,28 @@ import android.support.annotation.Nullable;
 public class MovieProvider extends ContentProvider{
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
+    private static final int MOVIE_WITH_ID = 200;
     private MovieDbHelper mOpenHelper ;
     static final int MOVIE = 100;
 
+    private static final SQLiteQueryBuilder movieBuilder;
+
+    static {
+        movieBuilder = new SQLiteQueryBuilder();
+        movieBuilder.setTables(
+                MovieContract.MovieEntry.TABLE_NAME
+        );
+    }
+
+    private static final String sMovieSelection =
+            MovieContract.MovieEntry.TABLE_NAME + "." + MovieContract.MovieEntry._ID + " = ? ";
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = MovieContract.CONTENT_AUTHORITY;
 
-        matcher.addURI(authority,MovieContract.PATH_MOVIE,MOVIE);
+        matcher.addURI(authority, MovieContract.PATH_MOVIE,MOVIE);
+        matcher.addURI(authority,MovieContract.PATH_MOVIE + "/#",MOVIE_WITH_ID);
 
         return  matcher;
 
@@ -50,9 +64,10 @@ public class MovieProvider extends ContentProvider{
             retCursor  = mOpenHelper.getReadableDatabase().query(
                     MovieContract.MovieEntry.TABLE_NAME, projection, selection, selectionArgs,
                     null, null, sortOrder);
-
+        }else if (MOVIE_WITH_ID == match){
+            retCursor = getMovieWithID(uri,projection,sortOrder);
         }
-        else throw new UnsupportedOperationException();
+        else throw new UnsupportedOperationException("Cannot find uri: " + uri);
 
 
 
@@ -71,7 +86,14 @@ public class MovieProvider extends ContentProvider{
 
     }
 
-
+    private Cursor getMovieWithID(Uri uri, String[] projection, String sortOrder){
+        String pathSegment = uri.getLastPathSegment();
+        return movieBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                sMovieSelection,new String[]{pathSegment},
+                null,null,
+                sortOrder);
+    }
 
 
     @Nullable
