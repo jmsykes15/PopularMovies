@@ -9,13 +9,13 @@
         android:layout_width="185dp"
         android:layout_height="wrap_content"
         android:src="@android:drawable/sym_def_app_icon"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/title_view"
         style="@style/margin"
-        android:textSize="24dp"
+        android:textSize="16dp"
         android:text="Hello"/>
 
 </LinearLayout>

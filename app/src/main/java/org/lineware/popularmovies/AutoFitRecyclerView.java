@@ -52,4 +52,5 @@ public class AutoFitRecyclerView extends RecyclerView {
             manager.setSpanCount(spanCount);
         }
     }
+
 }

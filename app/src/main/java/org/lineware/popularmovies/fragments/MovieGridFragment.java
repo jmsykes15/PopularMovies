@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.lineware.popularmovies.AutoFitRecyclerView;
@@ -22,10 +21,6 @@ import org.lineware.popularmovies.adapters.MoviesCursorAdapter;
 import org.lineware.popularmovies.helper.FetchMovieTask;
 import org.lineware.popularmovies.helper.MovieContract;
 
-
-/**
- * A placeholder fragment containing a simple view.
- */
 public class MovieGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     public static final int MOVIE_LOADER = 0;
@@ -56,10 +51,7 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     public interface Callback {
-        /**
-         * DetailFragmentCallback for when an item has been selected.
-         */
-        public void onItemSelected(Uri movieUri);
+        void onItemSelected(Uri movieUri);
     }
 
     @Override
@@ -72,30 +64,7 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
         mAdapter = new MoviesCursorAdapter(getActivity(), null);
         mRecyclerView.setAdapter(mAdapter);
 
-        mRecyclerView.setOnTouchListener(new AdapterView.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                View view = mRecyclerView.findChildViewUnder(event.getX(), event.getY());
-                int position = mRecyclerView.getChildAdapterPosition(view);
-
-                Cursor cursor = mAdapter.getCursor();
-
-                if(cursor != null){
-                    ((Callback) getActivity())
-                            .onItemSelected(MovieContract.MovieEntry.buildMovieUri(position+1));
-
-
-                }
-                mPosition = position;
-
-                if(savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)){
-                    mPosition = savedInstanceState.getInt(SELECTED_KEY);
-                }
-
-                return true;
-            }
-        });
-
+        mRecyclerView.setOnTouchListener(new MyOnTouchListener(savedInstanceState));
 
         return rootview;
     }
@@ -104,20 +73,13 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        if (id == R.id.action_settings) {return true;}
 
         if(id == R.id.action_refresh){
             updateMovies();
             return true;
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -138,13 +100,12 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
                 null,
                 null,
                 null);
+
         return cursorLoader;
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mAdapter.swapCursor(data);
-    }
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {mAdapter.swapCursor(data);}
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -155,13 +116,62 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        mAdapter.swapCursor(null);
-
+    public void onLoaderReset(Loader<Cursor> loader) {mAdapter.swapCursor(null);
     }
 
+    private class MyOnTouchListener implements View.OnTouchListener {
 
-//    private Cursor testDataGeneratator() {
-//        Cursor cursor = new
-//    }
+        private static final int MAX_CLICK_DURATION = 1000;
+        private static final int MAX_CLICK_DISTANCE = 15;
+        private final Bundle savedInstanceState;
+
+        private long pressStartTime;
+        private float pressedX;
+        private float pressedY;
+
+        public MyOnTouchListener(Bundle savedInstanceState) {
+            this.savedInstanceState = savedInstanceState;
+        }
+
+        float distance(float x1, float y1, float x2, float y2) {
+            float dx = x1 - x2;
+            float dy = y1 - y2;
+            float distanceInPx = (float) Math.sqrt(dx * dx + dy * dy);
+            return pxToDp(distanceInPx);
+        }
+
+        float pxToDp(float px) {
+          return px / getResources().getDisplayMetrics().density;
+      }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            View view = mRecyclerView.findChildViewUnder(event.getX(), event.getY());
+            int position = mRecyclerView.getChildAdapterPosition(view);
+
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN: {
+                    pressStartTime = System.currentTimeMillis();
+                    pressedX = event.getX();
+                    pressedY = event.getY();
+                    break;
+                }
+                case MotionEvent.ACTION_UP: {
+                    long pressDuration = System.currentTimeMillis() - pressStartTime;
+                    if (pressDuration < MAX_CLICK_DURATION && distance(pressedX, pressedY, event.getX(), event.getY()) < MAX_CLICK_DISTANCE) {
+                        ((Callback) getActivity())
+                        .onItemSelected(MovieContract.MovieEntry.buildMovieUri(position+1));
+                    }
+                }
+            }
+
+            mPosition = position;
+
+            if(savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)){
+                mPosition = savedInstanceState.getInt(SELECTED_KEY);
+            }
+
+            return true;
+        }
+    }
 }
