@@ -1,5 +1,6 @@
 package org.lineware.popularmovies.fragments;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import org.lineware.popularmovies.services.MovieDBAPI;
 import org.lineware.popularmovies.views.AutoFitRecyclerView;
 
 import java.util.List;
+import java.util.Vector;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -149,6 +151,27 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
             public void onResponse(Call<Movies> call, Response<Movies> response) {
                 movies = response.body();
                 movieItems = movies.getResults();
+
+                if(movieItems != null){
+                    mAdapter.swapCursor(null);
+
+                    Vector<ContentValues> cVVector =
+                            new Vector<>(movieItems.size());
+
+                    for(Result movie: movieItems){
+                        ContentValues movieValues = new ContentValues();
+
+                        movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE,movie.getOriginalTitle());
+                        movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, movie.getId());
+                        movieValues.put(MovieContract.MovieEntry.COLUMN_RELEASE, movie.getReleaseDate());
+                        movieValues.put(MovieContract.MovieEntry.COLUMN_POSTER, movie.getPosterPath());
+                        movieValues.put(MovieContract.MovieEntry.COLUMN_BANNER, movie.getBackdropPath());
+                        movieValues.put(MovieContract.MovieEntry.COLUMN_RATING, movie.getVoteAverage());
+                        movieValues.put(MovieContract.MovieEntry.COLUMN_PLOT, movie.getOverview());
+
+                        cVVector.add(movieValues);
+                    }
+                }
 
             }
 

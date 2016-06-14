@@ -28,13 +28,12 @@ public class Result {
     @SerializedName("backdrop_path")
     @Expose
     private String backdropPath;
-
-    @SerializedName("video")
-    @Expose
-    private Boolean video;
     @SerializedName("vote_average")
     @Expose
     private Double voteAverage;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
 
     /**
      *
@@ -150,24 +149,22 @@ public class Result {
     public void setBackdropPath(String backdropPath) {
         this.backdropPath = backdropPath;
     }
-
-
     /**
      *
      * @return
-     * The video
+     * The id
      */
-    public Boolean getVideo() {
-        return video;
+    public Integer getId() {
+        return id;
     }
 
     /**
      *
-     * @param video
-     * The video
+     * @param id
+     * The id
      */
-    public void setVideo(Boolean video) {
-        this.video = video;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     /**

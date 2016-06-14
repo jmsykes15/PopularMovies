@@ -19,14 +19,14 @@ public class MovieContract {
     public static final int COLUMN_PLOT = 7;
 
     public static final String[] Movie_COLUMNS = {
-            MovieContract.MovieEntry.TABLE_NAME + "." + MovieContract.MovieEntry._ID,
-            MovieContract.MovieEntry.COLUMN_MOVIE_ID,
-            MovieContract.MovieEntry.COLUMN_TITLE,
-            MovieContract.MovieEntry.COLUMN_RELEASE,
-            MovieContract.MovieEntry.COLUMN_RATING,
-            MovieContract.MovieEntry.COLUMN_POSTER,
-            MovieContract.MovieEntry.COLUMN_BANNER,
-            MovieContract.MovieEntry.COLUMN_PLOT,
+            MovieEntry.TABLE_NAME + "." + MovieEntry._ID,
+            MovieEntry.COLUMN_MOVIE_ID,
+            MovieEntry.COLUMN_TITLE,
+            MovieEntry.COLUMN_RELEASE,
+            MovieEntry.COLUMN_RATING,
+            MovieEntry.COLUMN_POSTER,
+            MovieEntry.COLUMN_BANNER,
+            MovieEntry.COLUMN_PLOT
 
     };
 
