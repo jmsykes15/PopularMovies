@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -34,6 +35,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+    private final String TAG = FetchMovieTask.class.getSimpleName();
 
     public static final int MOVIE_LOADER = 0;
 
@@ -50,10 +52,10 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
     /*
     * TODO: Delete this method
     */
-    private void updateMovies(){
-        FetchMovieTask fetchMovieTask = new FetchMovieTask(getContext());
-        fetchMovieTask.execute();
-    }
+//    private void updateMovies(){
+//        FetchMovieTask fetchMovieTask = new FetchMovieTask(getContext());
+//        fetchMovieTask.execute();
+//    }
 
     public MovieGridFragment() {
     }
@@ -68,7 +70,7 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
                 .build();
         movieDBAPI = retrofit.create(MovieDBAPI.PopularMoviesService.class);
 
-        getMovies("popular");
+//        getMovies("popular");
 
         setHasOptionsMenu(true);
     }
@@ -103,7 +105,7 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
         if (id == R.id.action_settings) {return true;}
 
         if(id == R.id.action_refresh){
-            updateMovies();
+            getMovies("popular");
             return true;
         }
 
@@ -171,6 +173,15 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
 
                         cVVector.add(movieValues);
                     }
+                    int inserted = 0;
+
+                    if(cVVector.size() > 0){
+                        ContentValues[] cvArray = new ContentValues[cVVector.size()];
+                        cVVector.toArray(cvArray);
+                        getContext().getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI, cvArray);
+                    }
+
+                    Log.d(TAG, "getMovieDataFromJson: FetchMovieTask Complete. " + inserted + " Inserted");
                 }
 
             }
