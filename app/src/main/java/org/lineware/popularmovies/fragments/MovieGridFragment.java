@@ -15,12 +15,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import org.lineware.popularmovies.views.AutoFitRecyclerView;
 import org.lineware.popularmovies.R;
 import org.lineware.popularmovies.adapters.MoviesCursorAdapter;
-import org.lineware.popularmovies.services.MovieDBAPI;
-import org.lineware.popularmovies.services.FetchMovieTask;
 import org.lineware.popularmovies.data.MovieContract;
+import org.lineware.popularmovies.model.Movies;
+import org.lineware.popularmovies.pojos.Result;
+import org.lineware.popularmovies.services.FetchMovieTask;
+import org.lineware.popularmovies.services.MovieDBAPI;
+import org.lineware.popularmovies.views.AutoFitRecyclerView;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -37,7 +41,9 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
     private int mPosition = ListView.INVALID_POSITION;
     private static final String SELECTED_KEY = "selected_position";
     private MovieDBAPI.PopularMoviesService movieDBAPI;
-    private Call<Cursor> cursorCall;
+    private Call<Movies> resultsCall;
+    private Movies movies;
+    private List<Result> movieItems;
 
     /*
     * TODO: Delete this method
@@ -59,6 +65,8 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         movieDBAPI = retrofit.create(MovieDBAPI.PopularMoviesService.class);
+
+        getMovies("popular");
 
         setHasOptionsMenu(true);
     }
@@ -130,21 +138,22 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {mAdapter.swapCursor(null);
-    }
+    public void onLoaderReset(Loader<Cursor> loader) {mAdapter.swapCursor(null);}
 
     public void getMovies(String sort){
-        cursorCall = movieDBAPI.listMovies(sort);
+        resultsCall = movieDBAPI.listMovies(sort);
 
-        cursorCall.enqueue(new retrofit2.Callback<Cursor>(){
+        resultsCall.enqueue(new retrofit2.Callback<Movies>(){
 
             @Override
-            public void onResponse(Call<Cursor> call, Response<Cursor> response) {
-                response.body();
+            public void onResponse(Call<Movies> call, Response<Movies> response) {
+                movies = response.body();
+                movieItems = movies.getResults();
+
             }
 
             @Override
-            public void onFailure(Call<Cursor> call, Throwable t) {
+            public void onFailure(Call<Movies> call, Throwable t) {
 
             }
         });

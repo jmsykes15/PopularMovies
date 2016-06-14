@@ -1,8 +1,7 @@
 package org.lineware.popularmovies.services;
 
-import android.database.Cursor;
-
 import org.lineware.popularmovies.BuildConfig;
+import org.lineware.popularmovies.model.Movies;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -13,7 +12,7 @@ import retrofit2.http.Path;
  */
 public class MovieDBAPI {
     public interface PopularMoviesService{
-        @GET("movies/{sort}?api_key=" + BuildConfig.TMDB_API_KEY)
-        Call<Cursor> listMovies(@Path("sort") String order);
+        @GET("movie/{sort}?api_key=" + BuildConfig.TMDB_API_KEY)
+        Call<Movies> listMovies(@Path("sort") String order);
     }
 }
