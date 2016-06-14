@@ -16,7 +16,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import org.lineware.popularmovies.R;
-import org.lineware.popularmovies.helper.MovieContract;
+import org.lineware.popularmovies.data.MovieContract;
 
 
 public class DetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {

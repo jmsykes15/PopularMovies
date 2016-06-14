@@ -1,4 +1,4 @@
-package org.lineware.popularmovies.helper;
+package org.lineware.popularmovies.services;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.lineware.popularmovies.data.MovieContract;
 
 import java.util.Vector;
 

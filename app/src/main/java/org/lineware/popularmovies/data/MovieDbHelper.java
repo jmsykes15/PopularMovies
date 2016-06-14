@@ -1,4 +1,4 @@
-package org.lineware.popularmovies.helper;
+package org.lineware.popularmovies.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

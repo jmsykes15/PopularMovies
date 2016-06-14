@@ -1,4 +1,4 @@
-package org.lineware.popularmovies;
+package org.lineware.popularmovies.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;

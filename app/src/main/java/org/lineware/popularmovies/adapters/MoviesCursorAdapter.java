@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.lineware.popularmovies.R;
-import org.lineware.popularmovies.helper.MovieContract;
+import org.lineware.popularmovies.data.MovieContract;
 
 /**
  * Created by jmsykes15 on 5/27/16.

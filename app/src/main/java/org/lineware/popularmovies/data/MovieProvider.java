@@ -1,4 +1,4 @@
-package org.lineware.popularmovies.helper;
+package org.lineware.popularmovies.data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;

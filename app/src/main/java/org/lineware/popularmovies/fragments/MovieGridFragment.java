@@ -15,26 +15,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import org.lineware.popularmovies.AutoFitRecyclerView;
+import org.lineware.popularmovies.views.AutoFitRecyclerView;
 import org.lineware.popularmovies.R;
 import org.lineware.popularmovies.adapters.MoviesCursorAdapter;
-import org.lineware.popularmovies.helper.FetchMovieTask;
-import org.lineware.popularmovies.helper.MovieContract;
+import org.lineware.popularmovies.services.MovieDBAPI;
+import org.lineware.popularmovies.services.FetchMovieTask;
+import org.lineware.popularmovies.data.MovieContract;
+
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     public static final int MOVIE_LOADER = 0;
 
-    public static final String MOVIE_DATA = "movieData";
+//    public static final String MOVIE_DATA = "movieData";
     private AutoFitRecyclerView mRecyclerView;
     private MoviesCursorAdapter mAdapter;
     private int mPosition = ListView.INVALID_POSITION;
     private static final String SELECTED_KEY = "selected_position";
-
+    private MovieDBAPI.PopularMoviesService movieDBAPI;
+    private Call<Cursor> cursorCall;
 
     /*
     * TODO: Delete this method
-    * */
+    */
     private void updateMovies(){
         FetchMovieTask fetchMovieTask = new FetchMovieTask(getContext());
         fetchMovieTask.execute();
@@ -47,12 +54,20 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://api.themoviedb.org/3/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        movieDBAPI = retrofit.create(MovieDBAPI.PopularMoviesService.class);
+
         setHasOptionsMenu(true);
     }
 
     public interface Callback {
         void onItemSelected(Uri movieUri);
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,14 +109,13 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Uri movieUri = MovieContract.MovieEntry.CONTENT_URI;
-        CursorLoader cursorLoader = new CursorLoader(getActivity(),
+
+        return new CursorLoader(getActivity(),
                 movieUri,
                 MovieContract.Movie_COLUMNS,
                 null,
                 null,
                 null);
-
-        return cursorLoader;
     }
 
     @Override
@@ -117,6 +131,23 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {mAdapter.swapCursor(null);
+    }
+
+    public void getMovies(String sort){
+        cursorCall = movieDBAPI.listMovies(sort);
+
+        cursorCall.enqueue(new retrofit2.Callback<Cursor>(){
+
+            @Override
+            public void onResponse(Call<Cursor> call, Response<Cursor> response) {
+                response.body();
+            }
+
+            @Override
+            public void onFailure(Call<Cursor> call, Throwable t) {
+
+            }
+        });
     }
 
     private class MyOnTouchListener implements View.OnTouchListener {
