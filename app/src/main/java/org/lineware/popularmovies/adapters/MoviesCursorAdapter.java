@@ -2,13 +2,14 @@ package org.lineware.popularmovies.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.lineware.popularmovies.R;
 import org.lineware.popularmovies.data.MovieContract;
@@ -17,14 +18,18 @@ import org.lineware.popularmovies.data.MovieContract;
  * Created by jmsykes15 on 5/27/16.
  */
 public class MoviesCursorAdapter extends CursorRecyclerViewAdapter<MoviesCursorAdapter.ViewHolder>{
+    private final Context mContext;
+
     public MoviesCursorAdapter(Context context, Cursor cursor) {
         super(context, cursor);
+        mContext = context;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, Cursor cursor) {
         viewHolder.titleView.setText(cursor.getString(MovieContract.COLUMN_TITLE));
-        viewHolder.posterView.setImageURI(Uri.parse(String.valueOf(MovieContract.COLUMN_POSTER)));
+        viewHolder.posterView.setAdjustViewBounds(true);
+        Picasso.with(mContext).load(cursor.getString(MovieContract.COLUMN_POSTER)).fit().placeholder(R.drawable.poster_placeholder).into(viewHolder.posterView);
     }
 
     @Override

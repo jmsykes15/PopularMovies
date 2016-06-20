@@ -7,6 +7,10 @@ import com.google.gson.annotations.SerializedName;
  * Created by jmsykes15 on 6/14/16.
  */
 public class Result {
+    final String POSTER_And_BACKDROP_URL = "http://image.tmdb.org/t/p/";
+    final String POSTER_SIZE = "w185";
+    private static final String BACKDROP_SIZE = "w500";
+
     @SerializedName("poster_path")
     @Expose
     private String posterPath;
@@ -50,7 +54,7 @@ public class Result {
      * The poster_path
      */
     public void setPosterPath(String posterPath) {
-        this.posterPath = posterPath;
+        this.posterPath = POSTER_And_BACKDROP_URL + POSTER_SIZE + posterPath;
     }
 
 
@@ -147,7 +151,7 @@ public class Result {
      * The backdrop_path
      */
     public void setBackdropPath(String backdropPath) {
-        this.backdropPath = backdropPath;
+        this.backdropPath =  POSTER_And_BACKDROP_URL + BACKDROP_SIZE + backdropPath;
     }
     /**
      *

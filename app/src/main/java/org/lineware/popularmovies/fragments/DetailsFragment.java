@@ -15,23 +15,30 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.lineware.popularmovies.R;
 import org.lineware.popularmovies.data.MovieContract;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class DetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-
-//    public static Movie movie;
-    private ImageView mBanner;
-    private TextView mPlot;
-    private TextView mRelease;
-    private RatingBar mRating;
+//    private ImageView mBanner;
+//    private TextView mPlot;
+//    private TextView mRelease;
+//    private RatingBar mRating;
 
     public static final String DETAIL_URI = "URI";
 
     private static final int DETAIL_LOADER = 0;
     private Uri mUri;
 
+    @Bind(R.id.movie_banner) ImageView mBanner;
+    @Bind(R.id.movie_plot) TextView mPlot;
+    @Bind(R.id.movie_release) TextView mRelease;
+    @Bind(R.id.movie_rating) RatingBar mRating;
 
     public DetailsFragment() {setHasOptionsMenu(false);}
 
@@ -47,12 +54,7 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
 
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
 
-        mBanner = (ImageView) rootView.findViewById(R.id.movie_banner);
-        mPlot = (TextView) rootView.findViewById(R.id.movie_plot);
-        mRelease = (TextView) rootView.findViewById(R.id.movie_release);
-        mRating = (RatingBar) rootView.findViewById(R.id.movie_rating);
-
-
+        ButterKnife.bind(this, rootView);
 
         return rootView;
     }
@@ -96,11 +98,12 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if(data != null && data.moveToFirst()){
-
-
-
             getActivity().setTitle(data.getString(MovieContract.COLUMN_TITLE));
-            mBanner.setImageURI(Uri.parse(data.getString(MovieContract.COLUMN_BANNER)));
+            mBanner.setAdjustViewBounds(true);
+
+            mBanner.setPadding(0, 0, 0, 0);
+            Picasso.with(getContext()).load(data.getString(MovieContract.COLUMN_BANNER)).fit().placeholder(R.drawable.backdrop_placeholder).into(mBanner);
+
             mPlot.setText(data.getString(MovieContract.COLUMN_PLOT));
             mRating.setRating(data.getLong(MovieContract.COLUMN_RATING));
             mRelease.setText(data.getString(MovieContract.COLUMN_RELEASE));

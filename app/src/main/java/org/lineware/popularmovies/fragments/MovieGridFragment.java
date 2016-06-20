@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -22,7 +21,6 @@ import org.lineware.popularmovies.adapters.MoviesCursorAdapter;
 import org.lineware.popularmovies.data.MovieContract;
 import org.lineware.popularmovies.model.Movies;
 import org.lineware.popularmovies.pojos.Result;
-import org.lineware.popularmovies.services.FetchMovieTask;
 import org.lineware.popularmovies.services.MovieDBAPI;
 import org.lineware.popularmovies.views.AutoFitRecyclerView;
 
@@ -35,11 +33,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
-    private final String TAG = FetchMovieTask.class.getSimpleName();
-
     public static final int MOVIE_LOADER = 0;
-
-//    public static final String MOVIE_DATA = "movieData";
     private AutoFitRecyclerView mRecyclerView;
     private MoviesCursorAdapter mAdapter;
     private int mPosition = ListView.INVALID_POSITION;
@@ -49,16 +43,7 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
     private Movies movies;
     private List<Result> movieItems;
 
-    /*
-    * TODO: Delete this method
-    */
-//    private void updateMovies(){
-//        FetchMovieTask fetchMovieTask = new FetchMovieTask(getContext());
-//        fetchMovieTask.execute();
-//    }
-
-    public MovieGridFragment() {
-    }
+    public MovieGridFragment(){}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,16 +53,12 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
                 .baseUrl("http://api.themoviedb.org/3/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        movieDBAPI = retrofit.create(MovieDBAPI.PopularMoviesService.class);
-
-//        getMovies("popular");
+        movieDBAPI = retrofit.create(MovieDBAPI.PopularMoviesService.class);;
 
         setHasOptionsMenu(true);
     }
 
-    public interface Callback {
-        void onItemSelected(Uri movieUri);
-    }
+    public interface Callback {void onItemSelected(Uri movieUri);}
 
 
 
@@ -157,8 +138,7 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
                 if(movieItems != null){
                     mAdapter.swapCursor(null);
 
-                    Vector<ContentValues> cVVector =
-                            new Vector<>(movieItems.size());
+                    Vector<ContentValues> cVVector = new Vector<>(movieItems.size());
 
                     for(Result movie: movieItems){
                         ContentValues movieValues = new ContentValues();
@@ -180,16 +160,12 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
                         cVVector.toArray(cvArray);
                         getContext().getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI, cvArray);
                     }
-
-                    Log.d(TAG, "getMovieDataFromJson: FetchMovieTask Complete. " + inserted + " Inserted");
                 }
 
             }
 
             @Override
-            public void onFailure(Call<Movies> call, Throwable t) {
-
-            }
+            public void onFailure(Call<Movies> call, Throwable t) {}
         });
     }
 
@@ -203,9 +179,7 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
         private float pressedX;
         private float pressedY;
 
-        public MyOnTouchListener(Bundle savedInstanceState) {
-            this.savedInstanceState = savedInstanceState;
-        }
+        public MyOnTouchListener(Bundle savedInstanceState) {this.savedInstanceState = savedInstanceState;}
 
         float distance(float x1, float y1, float x2, float y2) {
             float dx = x1 - x2;
